@@ -51,12 +51,12 @@ spec:
             memory: 100Mi
         ports:
         - containerPort: 5000
-          name: kube-registry-port
+          name: registry-port
           protocol: TCP
         volumeMounts:
-          - name: kube-registry-persistent-storage
+          - name: kube-registry-ps
             mountPath: "/var/lib/registry"
       volumes:
-        - name: postgresql-persistent-storage
+        - name: kube-registry-ps
           persistentVolumeClaim:
             claimName: kube-registry-pv-claim
