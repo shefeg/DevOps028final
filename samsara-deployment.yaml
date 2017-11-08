@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: samsara
+  labels:
+    service: samsara
+spec:
+  ports:
+    - port: 9000
+      targetPort: 9000
+  selector:
+    service: samsara
+  type: LoadBalancer
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: samsara
+  name: samsara-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      service: samsara
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        service: samsara
+    spec:
+      initContainers:
+        - name: init-mydb
+          image: postgres:9.3
+          env:
+          - name: PGHOST
+            value: "52.90.26.189"
+          - name: PGPORT
+            value: "35432"
+          - name: PGDATABASE
+            value: auradb
+          - name: PGUSER
+            value: aura
+          - name: PGPASSWORD
+            value: mysecretpassword
+          command: ['/bin/bash', '-c', 'while [ 1 ]; do psql && break || sleep 5; done']
+      containers:
+      - image: 455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara:latest
+#        imagePullPolicy: Always
+        name: samsara
+        env:
+        - name: DB_HOST
+          value: "postgresdb.default.svc.cluster.local"
+        - name: DB_NAME
+          value: auradb
+        - name: DB_USER
+          value: aura
+        - name: DB_PASS
+          value: mysecretpassword
+        ports:
+        - containerPort: 9000
+          protocol: TCP
+          name: samsara-port
