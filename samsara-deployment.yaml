@@ -41,7 +41,7 @@ spec:
           - name: PGHOST
             value: "52.90.26.189"
           - name: PGPORT
-            value: "35432"
+            value: "32001"
           - name: PGDATABASE
             value: auradb
           - name: PGUSER
