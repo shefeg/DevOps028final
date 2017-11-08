@@ -33,6 +33,7 @@ metadata:
     service: kube-registry
   name: kube-registry-deployment
 spec:
+  replicas: 1
   selector:
     matchLabels:
       service: kube-registry
