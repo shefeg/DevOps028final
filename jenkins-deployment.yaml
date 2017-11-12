@@ -43,14 +43,16 @@ spec:
         service: jenkins
     spec:
       containers:
-      - name: jenkins
-        image: 54.80.211.57:32003/jenkins/jenkins-image:latest
+      - image: jenkins/jenkins:2.73.1
+        name: jenkins
         ports:
         - containerPort: 8080
-        volumeMounts:
-          - name: jenkins-ps
-            mountPath: "/var/jenkins_home"
-      volumes:
-      - name: jenkins-ps
-        persistentVolumeClaim:
-          claimName: jenkins-pv-claim
+          name: jenkins-port
+          protocol: TCP
+#        volumeMounts:
+#          - name: jenkins-ps
+#            mountPath: "/var/jenkins_home"
+#      volumes:
+#      - name: jenkins-ps
+#        persistentVolumeClaim:
+#          claimName: jenkins-pv-claim
