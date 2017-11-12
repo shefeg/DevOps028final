@@ -43,7 +43,7 @@ spec:
         service: jenkins
     spec:
       containers:
-      - image: kube-registry:5000/jenkins/jenkins-image:latest
+      - image: 54.80.211.57:32003/jenkins/jenkins-image:latest
         name: jenkins
         ports:
         - containerPort: 8080
