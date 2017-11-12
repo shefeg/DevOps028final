@@ -53,16 +53,16 @@ spec:
 #        command: ["/bin/bash"]
 #        args: ["-c", "touch /etc/docker/registry/letsencrypt.json"]
         env:
-#        - name: REGISTRY_HTTP_ADDR
-#          value: "0.0.0.0:5000"
+        - name: REGISTRY_HTTP_ADDR
+          value: "54.80.211.57:5000"
 #        - name: REGISTRY_HTTP_HOST
 #          value: https://docker.example.com
-#        - name: EGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
+#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
 #          value: /etc/docker/registry/letsencrypt.json
 #        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
 #          value: admin@example.com
-#        - name: REGISTRY_PROXY_REMOTEURL
-#          value: https://registry-1.docker.io
+        - name: REGISTRY_PROXY_REMOTEURL
+          value: https://registry-1.docker.io
         - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
           value: "/cache.letsencrypt"
         - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
