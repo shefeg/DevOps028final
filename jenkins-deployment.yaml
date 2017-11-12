@@ -29,7 +29,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 4Gi
+      storage: 2Gi
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -60,6 +60,6 @@ spec:
           - name: jenkins-ps
             mountPath: "/var"
       volumes:
-      - name: jenkins-ps
-        persistentVolumeClaim:
-          claimName: jenkins-pv-claim
+        - name: jenkins-ps
+          persistentVolumeClaim:
+            claimName: jenkins-pv-claim
