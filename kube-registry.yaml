@@ -5,10 +5,10 @@ metadata:
   labels:
     service: kube-registry
 spec:
-#  type: NodePort
+  type: NodePort
   ports:
   - port: 443
-#    nodePort: 32003
+    nodePort: 32003
     targetPort: 5000
   selector:
     service: kube-registry
