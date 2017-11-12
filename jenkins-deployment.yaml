@@ -50,8 +50,8 @@ spec:
       containers:
       - image: 184.72.140.182:32003/jenkins/jenkins-image:latest
         name: jenkins
-        command: ["/bin/bash"]
-        args: ["-c", "pass=`cat /var/jenkins_home/secrets/initialAdminPassword` && echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount(\"alexey\", \"Ins1ght\")' | java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -auth admin:$pass -s http://184.72.140.182:32002/ groovy ="]
+#        command: ["/bin/bash"]
+#        args: ["-c", "pass=`cat /var/jenkins_home/secrets/initialAdminPassword` && echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount(\"alexey\", \"Ins1ght\")' | java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -auth admin:$pass -s http://184.72.140.182:32002/ groovy ="]
         ports:
         - containerPort: 8080
           name: jenkins-port
