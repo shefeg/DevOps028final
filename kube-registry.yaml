@@ -24,7 +24,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 5Gi
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -49,8 +49,8 @@ spec:
           limits:
             cpu: 100m
             memory: 100Mi
-        command: ["/bin/bash"]
-        args: ["-c", "touch /etc/docker/registry/letsencrypt.json"]
+#        command: ["/bin/bash"]
+#        args: ["-c", "touch /etc/docker/registry/letsencrypt.json"]
         env:
         - name: REGISTRY_HTTP_ADDR
           value: "0.0.0.0:5000"
@@ -69,12 +69,12 @@ spec:
         volumeMounts:
           - name: kube-registry-ps-lib
             mountPath: "/var/lib/registry"
-          - name: kube-registry-ps-etc
-            mountPath: "/etc/docker/registry"
+#          - name: kube-registry-ps-etc
+#            mountPath: "/etc/docker/registry"
       volumes:
-        - name: kube-registry-ps-etc
-          persistentVolumeClaim:
-            claimName: kube-registry-pv-claim
         - name: kube-registry-ps-lib
           persistentVolumeClaim:
             claimName: kube-registry-pv-claim
+#        - name: kube-registry-ps-etc
+#          persistentVolumeClaim:
+#            claimName: kube-registry-pv-claim
