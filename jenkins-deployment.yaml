@@ -7,9 +7,13 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 8080
+  - name: jenkins
+    port: 8080
     nodePort: 32002
     targetPort: 8080
+  - name: jnlp
+    port: 32010
+    targetPort: 32010
   selector:
     service: jenkins
 ---
@@ -45,6 +49,7 @@ spec:
       containers:
       - image: 54.80.211.57:32003/jenkins/jenkins-image:latest
         name: jenkins
+        command: ["/bin/bash"]
         ports:
         - containerPort: 8080
           name: jenkins-port
