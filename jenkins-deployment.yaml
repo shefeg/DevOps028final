@@ -50,12 +50,7 @@ spec:
         volumeMounts:
         - name: jenkins-ps-home
           mountPath: "/var/jenkins_home"
-        - name: jenkins-ps-logs
-          mountPath: "/var/log/jenkins"
       volumes:
       - name: jenkins-ps-home
-        persistentVolumeClaim:
-          claimName: jenkins-pv-claim
-      - name: jenkins-ps-logs
         persistentVolumeClaim:
           claimName: jenkins-pv-claim
