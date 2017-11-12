@@ -7,13 +7,14 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: jenkins
-    port: 8080
+  - port: 8080
+    name: jenkins
     nodePort: 32002
     targetPort: 8080
-  - name: jnlp
-    port: 32010
-    targetPort: 32010
+  - port: 50000
+    name: jnlp
+    nodePort: 32005
+    targetPort: 50000
   selector:
     service: jenkins
 ---
