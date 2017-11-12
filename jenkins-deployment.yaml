@@ -13,6 +13,19 @@ spec:
   selector:
     service: jenkins
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-pv-claim
+  labels:
+    service: jenkins
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -34,3 +47,12 @@ spec:
         image: jenkins/jenkins:2.73.1
         ports:
         - containerPort: 8080
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: "/var/jenkins_home"
+        - name: jenkins-logs
+          mountPath: "/var/log/jenkins"
+      volumes:
+      - name: jenkins-ps
+        persistentVolumeClaim:
+        claimName: jenkins-pv-claim
