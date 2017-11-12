@@ -24,7 +24,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 2Gi
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -48,14 +48,9 @@ spec:
         ports:
         - containerPort: 8080
         volumeMounts:
-          - name: jenkins-ps-home
+          - name: jenkins-ps
             mountPath: "/var/jenkins_home"
-          - name: jenkins-ps-logs
-            mountPath: "/var/log/jenkins"
       volumes:
-      - name: jenkins-ps-home
-        persistentVolumeClaim:
-          claimName: jenkins-pv-claim
-      - name: jenkins-ps-logs
+      - name: jenkins-ps
         persistentVolumeClaim:
           claimName: jenkins-pv-claim
