@@ -26,7 +26,7 @@ spec:
     requests:
       storage: 2Gi
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   labels:
@@ -49,10 +49,10 @@ spec:
         - containerPort: 8080
           name: jenkins-port
           protocol: TCP
-#        volumeMounts:
-#          - name: jenkins-ps
-#            mountPath: "/var/jenkins_home"
-#      volumes:
-#      - name: jenkins-ps
-#        persistentVolumeClaim:
-#          claimName: jenkins-pv-claim
+        volumeMounts:
+          - name: jenkins-ps
+            mountPath: "/var/jenkins_home"
+      volumes:
+      - name: jenkins-ps
+        persistentVolumeClaim:
+          claimName: jenkins-pv-claim
