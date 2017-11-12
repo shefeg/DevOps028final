@@ -5,5 +5,3 @@ RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh kubernetes:1.1
 
 VOLUME ["/var/log/jenkins", "/var/jenkins_home"]
-
-pass=`cat /var/jenkins_home/secrets/initialAdminPassword` && echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount("alexey", "Ins1ght")' | java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -auth admin:$pass -s http://184.72.140.182:32002/ groovy =
