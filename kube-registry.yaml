@@ -67,9 +67,14 @@ spec:
           name: registry-port
           protocol: TCP
         volumeMounts:
-          - name: kube-registry-ps
+          - name: kube-registry-ps-lib
             mountPath: "/var/lib/registry"
+          - name: kube-registry-ps-etc
+            mountPath: "/etc/docker/registry"
       volumes:
-        - name: kube-registry-ps
+        - name: kube-registry-ps-etc
+          persistentVolumeClaim:
+            claimName: kube-registry-pv-claim
+        - name: kube-registry-ps-lib
           persistentVolumeClaim:
             claimName: kube-registry-pv-claim
