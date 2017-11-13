@@ -30,7 +30,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 2Gi
 ---
 apiVersion: apps/v1beta1
 kind: Deployment
@@ -49,7 +49,7 @@ spec:
         service: jenkins
     spec:
       containers:
-      - image: 184.72.140.182:32003/jenkins/jenkins-image:latest
+      - image: 52.207.226.171:32003/jenkins/jenkins-image:latest
         name: jenkins
 #        command: ["/bin/bash"]
 #        args: ["-c", "pass=`cat /var/jenkins_home/secrets/initialAdminPassword` && echo 'jenkins.model.Jenkins.instance.securityRealm.createAccount(\"alexey\", \"Ins1ght\")' | java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -auth admin:$pass -s http://184.72.140.182:32002/ groovy ="]
