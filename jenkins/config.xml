@@ -5,8 +5,8 @@
     <numExecutors>2</numExecutors>
     <mode>NORMAL</mode>
     <useSecurity>true</useSecurity>
-    <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
-        <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+    <authorizationStrategy class="hudson.security.GlobalMatrixAuthorizationStrategy">
+        <permission>hudson.model.Hudson.Administer:alexey</permission>
     </authorizationStrategy>
     <securityRealm class="hudson.security.HudsonPrivateSecurityRealm">
         <disableSignup>true</disableSignup>
@@ -30,7 +30,7 @@
                     <namespace>default</namespace>
                     <privileged>false</privileged>
                     <alwaysPullImage>false</alwaysPullImage>
-                    <instanceCap>2147483647</instanceCap>
+                    <instanceCap>1</instanceCap>
                     <slaveConnectTimeout>100</slaveConnectTimeout>
                     <idleMinutes>0</idleMinutes>
                     <activeDeadlineSeconds>0</activeDeadlineSeconds>
@@ -46,7 +46,7 @@
                         <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
                             <name>jnlp</name>
                             <image>jenkins/jnlp-slave</image>
-                            <privileged>false</privileged>
+                            <privileged>true</privileged>
                             <alwaysPullImage>false</alwaysPullImage>
                             <workingDir>/home/jenkins</workingDir>
                             <command>/bin/sh -c</command>
@@ -54,8 +54,8 @@
                             <ttyEnabled>true</ttyEnabled>
                             <resourceRequestCpu></resourceRequestCpu>
                             <resourceRequestMemory></resourceRequestMemory>
-                            <resourceLimitCpu></resourceLimitCpu>
-                            <resourceLimitMemory></resourceLimitMemory>
+                            <resourceLimitCpu>100m</resourceLimitCpu>
+                            <resourceLimitMemory>100Mi</resourceLimitMemory>
                             <envVars/>
                             <ports/>
                             <livenessProbe>
@@ -74,7 +74,6 @@
                 </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
             </templates>
             <skipTlsVerify>false</skipTlsVerify>
-            <credentialsId>kubernetes-credentials</credentialsId>
             <containerCap>10</containerCap>
             <retentionTimeout>5</retentionTimeout>
             <connectTimeout>0</connectTimeout>
