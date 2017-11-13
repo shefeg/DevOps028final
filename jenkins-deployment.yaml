@@ -11,12 +11,13 @@ spec:
       name: jenkins
       nodePort: 32002
       targetPort: 8080
-    - port: 50000
+    - port: 9000
       name: jnlp
       nodePort: 32005
-      targetPort: 50000
+      targetPort: 9000
   selector:
     service: jenkins
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
