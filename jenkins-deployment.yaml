@@ -64,6 +64,9 @@ spec:
             mountPath: "/usr/bin/docker"
           - name: docker-sock
             mountPath: "/var/run/docker.sock"
+          - name: docker-lib
+            hostPath:
+            mountPath: "/usr/lib/x86_64-linux-gnu/libltdl.so.7"
       volumes:
         - name: jenkins-ps
           persistentVolumeClaim:
@@ -74,3 +77,6 @@ spec:
         - name: docker-sock
           hostPath:
             path: "/var/run/docker.sock"
+        - name: docker-lib
+          hostPath:
+            path: "/usr/lib/x86_64-linux-gnu/libltdl.so.7"
