@@ -4,9 +4,9 @@ COPY jenkins/plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh kubernetes:1.1
 
-
-
 COPY jenkins/config.xml /var/jenkins_home/config.xml
+
+COPY jenkins/create_user.groovy /var/jenkins_home/init.groovy.d/create_user.groovy
 
 RUN mkdir -p /var/jenkins_home/jobs/build_application
 COPY jenkins/pipeline/pipeline_config.xml /var/jenkins_home/jobs/build_application/config.xml
