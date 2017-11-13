@@ -1,11 +1,1 @@
-import jenkins.model.*
-
-def jobName = "build_application"
-def configXml = "/var/jenkins_home/build_application.xml"
-
-def xmlStream = new ByteArrayInputStream( configXml.getBytes() )
-
-//Jenkins.instance.createProjectFromXML(jobName, xmlStream)
-Job createPipeline {
-    parent.createProjectFromXML(jobName, xmlStream)
-}
+"/bin/bash -c java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar http://`curl http://169.254.169.254/latest/meta-data/public-ipv4`:32002 -auth alexey:Ins1ght create-job build_application < /var/jenkins_home/build_application.xml".execute()
