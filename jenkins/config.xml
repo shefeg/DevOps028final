@@ -16,6 +16,7 @@
     <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
     <workspaceDir>${JENKINS_HOME}/workspace/${ITEM_FULLNAME}</workspaceDir>
     <buildsDir>${ITEM_ROOTDIR}/builds</buildsDir>
+    <markupFormatter class="hudson.markup.EscapedMarkupFormatter"/>
     <jdks/>
     <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
     <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
@@ -23,57 +24,9 @@
         <org.csanchez.jenkins.plugins.kubernetes.KubernetesCloud plugin="kubernetes@1.1">
             <name>kubernetes</name>
             <defaultsProviderTemplate></defaultsProviderTemplate>
-            <templates>
-                <org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
-                    <inheritFrom></inheritFrom>
-                    <name>jenkins-slave</name>
-                    <namespace>default</namespace>
-                    <privileged>false</privileged>
-                    <alwaysPullImage>false</alwaysPullImage>
-                    <instanceCap>1</instanceCap>
-                    <slaveConnectTimeout>100</slaveConnectTimeout>
-                    <idleMinutes>0</idleMinutes>
-                    <activeDeadlineSeconds>0</activeDeadlineSeconds>
-                    <label>jenkins-slave</label>
-                    <nodeSelector></nodeSelector>
-                    <nodeUsageMode>NORMAL</nodeUsageMode>
-                    <customWorkspaceVolumeEnabled>false</customWorkspaceVolumeEnabled>
-                    <workspaceVolume class="org.csanchez.jenkins.plugins.kubernetes.volumes.workspace.EmptyDirWorkspaceVolume">
-                        <memory>false</memory>
-                    </workspaceVolume>
-                    <volumes/>
-                    <containers>
-                        <org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-                            <name>jnlp</name>
-                            <image>jenkins/jnlp-slave</image>
-                            <privileged>true</privileged>
-                            <alwaysPullImage>false</alwaysPullImage>
-                            <workingDir>/home/jenkins</workingDir>
-                            <command>/bin/sh -c</command>
-                            <args>cat</args>
-                            <ttyEnabled>true</ttyEnabled>
-                            <resourceRequestCpu></resourceRequestCpu>
-                            <resourceRequestMemory></resourceRequestMemory>
-                            <resourceLimitCpu>100m</resourceLimitCpu>
-                            <resourceLimitMemory>100Mi</resourceLimitMemory>
-                            <envVars/>
-                            <ports/>
-                            <livenessProbe>
-                                <execArgs></execArgs>
-                                <timeoutSeconds>0</timeoutSeconds>
-                                <initialDelaySeconds>0</initialDelaySeconds>
-                                <failureThreshold>0</failureThreshold>
-                                <periodSeconds>0</periodSeconds>
-                                <successThreshold>0</successThreshold>
-                            </livenessProbe>
-                        </org.csanchez.jenkins.plugins.kubernetes.ContainerTemplate>
-                    </containers>
-                    <envVars/>
-                    <annotations/>
-                    <imagePullSecrets/>
-                </org.csanchez.jenkins.plugins.kubernetes.PodTemplate>
-            </templates>
-            <skipTlsVerify>false</skipTlsVerify>
+            <templates/>
+            <skipTlsVerify>true</skipTlsVerify>
+            <credentialsId>kubernetes-credentials</credentialsId>
             <containerCap>10</containerCap>
             <retentionTimeout>5</retentionTimeout>
             <connectTimeout>0</connectTimeout>
@@ -94,6 +47,9 @@
     </views>
     <primaryView>all</primaryView>
     <slaveAgentPort>50000</slaveAgentPort>
+    <enabledAgentProtocols>
+        <string>JNLP3-connect</string>
+    </enabledAgentProtocols>
     <label></label>
     <crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">
         <excludeClientIPFromCrumb>false</excludeClientIPFromCrumb>

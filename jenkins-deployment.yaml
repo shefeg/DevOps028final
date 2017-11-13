@@ -64,3 +64,11 @@ spec:
         - name: jenkins-ps
           persistentVolumeClaim:
             claimName: jenkins-pv-claim
+        - name: docker-bin
+            hostPath:
+              path: /usr/bin/docker
+            type: File
+        - name: docker-sock
+            hostPath:
+              path: /var/run/docker.sock
+            type: Socket
