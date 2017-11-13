@@ -11,10 +11,10 @@ spec:
       name: jenkins
       nodePort: 32002
       targetPort: 8080
-    - port: 9000
+    - port: 50000
       name: jnlp
       nodePort: 32005
-      targetPort: 9000
+      targetPort: 50000
   selector:
     service: jenkins
   type: LoadBalancer
