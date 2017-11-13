@@ -1,0 +1,48 @@
+podTemplate(label: 'docker', containers: [
+	containerTemplate(
+		image: 'docker', name: 'docker', privileged: true,  workingDir: '/home/jenkins', command: 'cat', ttyEnabled: true)],
+    volumes: [
+		hostPathVolume(hostPath: '/var/run/docker.sock', mountPath: '/var/run/docker.sock'),
+		hostPathVolume(hostPath: '/usr/bin/docker', mountPath: '/usr/bin/docker'),
+        hostPathVolume(hostPath: '/usr/lib/x86_64-linux-gnu/libltdl.so.7', mountPath: '/usr/lib/x86_64-linux-gnu/libltdl.so.7')
+		]) {
+
+    node('docker') {
+
+    parameters {
+        string(name: 'KOPS_CLUSTER_NAME', defaultValue: 'aikubernetes.k8s.local')
+        string(name: 'KOPS_CLUSTER_S3_STATE', defaultValue: 's3://aikubernetes-k8s-local-state-store')
+    }
+
+    stage('Checkout') {
+        checkout(
+            [$class: 'GitSCM',
+            branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: 'CleanBeforeCheckout']], submoduleCfg: [],
+            userRemoteConfigs: [[url: 'https://github.com/shefeg/DevOps028final.git']]]
+        )
+    }
+
+    stage('Build and push Samsara and Postgres images to AWS ECR') {
+        app = docker.build("samsara", "-f Dockerfile.app .")
+		db = docker.build("postgresdb", "-f Dockerfile.db .")
+		    docker.withRegistry("http://52.207.226.171:32003") {
+				app.push("latest")
+				db.push("latest")
+			}
+		sh "docker rmi `docker images -q -f dangling=true`"
+	}
+
+
+	stage('Apply updates to Kubernetes cluster when ready') {
+        sh "kubectl apply -f postgres-deployment.yaml"
+        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara --record"
+	}
+
+	stage('Check if application is reachable on the Loadbalancer') {
+        timeout(time: 10, unit: 'MINUTES') {
+           sh "until \$(curl -sSf http://`kubectl describe svc samsara | grep \"LoadBalancer Ingress:\" | cut -d':' -f2 | tr -d ' '`:9000/login > /dev/null); do sleep 10; done"
+        }
+	}
+    }
+}
