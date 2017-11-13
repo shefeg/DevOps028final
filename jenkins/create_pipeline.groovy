@@ -1,1 +1,2 @@
-"/bin/bash -c \"java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://`curl http://169.254.169.254/latest/meta-data/public-ipv4`:32002 -auth alexey:Ins1ght create-job build_application < /var/jenkins_home/build_application.xml\"".execute()
+def command = "java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://`curl http://169.254.169.254/latest/meta-data/public-ipv4`:32002 -auth alexey:Ins1ght create-job build_application < /var/jenkins_home/build_application.xml"
+println command.execute().text
