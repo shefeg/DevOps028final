@@ -77,6 +77,4 @@ spec:
         - name: kube-registry-ps-lib
           persistentVolumeClaim:
             claimName: kube-registry-pv-claim
-#        - name: kube-registry-ps-etc
-#          persistentVolumeClaim:
-#            claimName: kube-registry-pv-claim
+
