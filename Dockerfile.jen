@@ -13,3 +13,5 @@ COPY jenkins/pipeline/build_application.xml /var/jenkins_home/build_application.
 COPY jenkins/create_pipeline.groovy /var/jenkins_home/init.groovy.d/create_pipeline.groovy
 
 VOLUME ["/var/log/jenkins", "/var/jenkins_home"]
+
+RUN usermod -aG docker jenkins
