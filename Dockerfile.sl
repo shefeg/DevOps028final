@@ -1,11 +1,13 @@
 FROM jenkins/jnlp-slave
 
-USER 0
+USER root
 
-RUN apt-get update && \
-    apt-get install sudo
+RUN apt-get -qq update \
+    && apt-get -qq -y install \
+    curl
 
-CMD DOCKER_GID=$(stat -c '%g' /var/run/docker.sock) && \
-    groupadd -for -g ${DOCKER_GID} docker && \
-    usermod -aG docker jenkins && \
-    sudo -E -H -u jenkins bash -c /usr/local/bin/jenkins.sh
+RUN curl -sSL https://get.docker.com/ | sh
+
+RUN usermod -a -G staff,docker jenkins
+
+USER jenkins
