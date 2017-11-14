@@ -65,7 +65,6 @@ spec:
           - name: docker-sock
             mountPath: "/var/run/docker.sock"
           - name: docker-lib
-            hostPath:
             mountPath: "/usr/lib/x86_64-linux-gnu/libltdl.so.7"
       volumes:
         - name: jenkins-ps
