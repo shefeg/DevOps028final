@@ -51,31 +51,16 @@ spec:
       containers:
       - image: 34.207.172.193:32003/jenkins/jenkins-image:latest
         name: jenkins
-#        command: ["/bin/bash"]
-#        args: ["-c", "sleep 120 && java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4)):32002 -auth alexey:Ins1ght create-job build_application < /var/jenkins_home/build_application.xml"]
+        command: ["/bin/bash"]
+        args: ["-c", "while [ 1 ]; do sleep 120; done && java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar http://$(curl http://169.254.169.254/latest/meta-data/public-ipv4)):32002 -auth alexey:Ins1ght create-job build_application < /var/jenkins_home/build_application.xml"]
         ports:
         - containerPort: 8080
           name: jenkins-port
           protocol: TCP
         volumeMounts:
           - name: jenkins-ps
-            mountPath: "/var"
-          - name: docker-bin
-            mountPath: "/usr/bin/docker"
-          - name: docker-sock
-            mountPath: "/var/run/docker.sock"
-          - name: docker-lib
-            mountPath: "/usr/lib/x86_64-linux-gnu/libltdl.so.7"
+            mountPath: "/var/jenkins_home"
       volumes:
         - name: jenkins-ps
           persistentVolumeClaim:
             claimName: jenkins-pv-claim
-        - name: docker-bin
-          hostPath:
-            path: "/usr/bin/docker"
-        - name: docker-sock
-          hostPath:
-            path: "/var/run/docker.sock"
-        - name: docker-lib
-          hostPath:
-            path: "/usr/lib/x86_64-linux-gnu/libltdl.so.7"
