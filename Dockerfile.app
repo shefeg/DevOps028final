@@ -1,6 +1,6 @@
 FROM maven:3.5-jdk-8-onbuild
 
-RUN mvn clean package
+RUN mvn package
 
 FROM openjdk:8
 
