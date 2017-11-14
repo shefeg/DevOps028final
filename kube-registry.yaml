@@ -7,7 +7,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 5000
+    - port: 443
       nodePort: 32003
       targetPort: 5000
   selector:
@@ -61,10 +61,10 @@ spec:
 #          value: admin@example.com
 #        - name: REGISTRY_PROXY_REMOTEURL
 #          value: https://registry-1.docker.io
-#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
-#          value: "/cache.letsencrypt"
-#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
-#          value: "admin@example.com"
+        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
+          value: "/cache.letsencrypt"
+        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
+          value: "admin@example.com"
         ports:
         - containerPort: 5000
           name: registry-port
