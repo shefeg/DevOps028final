@@ -6,7 +6,6 @@ RUN /usr/local/bin/install-plugins.sh kubernetes:1.1
 
 COPY jenkins/config.xml /var/jenkins_home/config.xml
 
-COPY jenkins/credentials.groovy //var/jenkins_home/init.groovy.d/credentials.groovy
 COPY jenkins/create_user.groovy /var/jenkins_home/init.groovy.d/create_user.groovy
 
 COPY jenkins/pipeline/build_application.xml /var/jenkins_home/build_application.xml
@@ -16,10 +15,8 @@ USER root
 
 ADD https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz /tmp
 RUN tar -xvzf /tmp/docker-latest.tgz && \
-    mv docker/* /usr/bin/ && \
-    chmod +x /usr/bin/docker && \
-    rm -f /tmp/docker-latest.tgz
+mv docker/* /usr/bin/ && \
+chmod +x /usr/bin/docker && \
+rm -f /tmp/docker-latest.tgz
 
-RUN addgroup $USER docker
-
-USER jenkins
+RUN usermod -a -G docker jenkins

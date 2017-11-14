@@ -58,7 +58,12 @@ spec:
         volumeMounts:
           - name: jenkins-ps
             mountPath: "/var"
+          - name: docker-sock
+            mountPath: "/var/run/docker.sock"
       volumes:
         - name: jenkins-ps
           persistentVolumeClaim:
             claimName: jenkins-pv-claim
+        - name: docker-sock
+          hostPath:
+            path: "/var/run/docker.sock"

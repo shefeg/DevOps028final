@@ -50,7 +50,7 @@
     <enabledAgentProtocols>
         <string>JNLP3-connect</string>
     </enabledAgentProtocols>
-    <label></label>
+    <label>master</label>
     <crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">
         <excludeClientIPFromCrumb>false</excludeClientIPFromCrumb>
     </crumbIssuer>
