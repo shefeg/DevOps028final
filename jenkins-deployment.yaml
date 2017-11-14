@@ -59,7 +59,7 @@ spec:
           protocol: TCP
         volumeMounts:
           - name: jenkins-ps
-            mountPath: "/var/jenkins_home"
+            mountPath: "/var"
       volumes:
         - name: jenkins-ps
           persistentVolumeClaim:
