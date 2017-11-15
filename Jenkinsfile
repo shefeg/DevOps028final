@@ -1,3 +1,4 @@
+import java.net.*;
 node('master') {
 
     parameters {
