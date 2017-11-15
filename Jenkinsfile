@@ -53,15 +53,18 @@ node('master') {
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
-        timeout(time: 2, unit: 'MINUTES') {
+        timeout(time: 5, unit: 'MINUTES') {
             APP_URI = sh(
                     script: "kubectl describe services samsara | grep 'LoadBalancer Ingress:' | cut -d':' -f2 | tr -d ' '",
                     returnStdout: true
             ).trim()
             waitUntil {
                 try {
-                    new URL("http://$APP_URI/9000/login").getText()
+                    def checkurl = new URL("http://$APP_URI:9000/login").getText()
+                    println("Status: "+checkurl.status)
+                    println("Content: "+checkurl.content)
                     return true
+
                 } catch (Exception e) {
                     return false
                 }
