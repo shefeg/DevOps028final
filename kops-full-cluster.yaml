@@ -71,7 +71,7 @@ metadata:
   name: nodes
 spec:
   image: kope.io/k8s-1.7-debian-jessie-amd64-hvm-ebs-2017-07-28
-  machineType: t2.micro
+  machineType: t2.large
   maxSize: 1
   minSize: 1
   role: Node
