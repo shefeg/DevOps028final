@@ -54,20 +54,8 @@ node('master') {
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
-        timeout(time: 5, unit: 'MINUTES') {
-            APP_URI = sh(
-                    script: "kubectl describe services samsara | grep 'LoadBalancer Ingress:' | cut -d':' -f2 | tr -d ' '",
-                    returnStdout: true
-            ).trim()
-            waitUntil {
-                try {
-                    InetAddress.getByName("http://$APP_URI:9000/login").isReachable(2000); //Replace with your name
-                    return true;
-                } catch (Exception e)
-                {
-                    return false;
-                }
-            }
+        timeout(time: 10, unit: 'MINUTES') {
+            sh "until \$(curl -sSf http://`kubectl describe svc samsara | grep \"LoadBalancer Ingress:\" | cut -d':' -f2 | tr -d ' '`:9000/login > /dev/null); do sleep 10; done"
         }
     }
 }
