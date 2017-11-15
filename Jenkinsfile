@@ -37,6 +37,7 @@ node('master') {
             sh "docker rmi `docker images -q -f dangling=true`"
         } catch (Exception e) {
             return true
+        }
     }
 
     stage('Configure kubectl tool') {
@@ -68,4 +69,3 @@ node('master') {
         }
     }
 }
-
