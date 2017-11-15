@@ -38,8 +38,6 @@ spec:
         - name: init-mydb
           image: postgres:9.3
           env:
-#          - name: PGHOST
-#            value: "52.90.26.189"
           - name: PGPORT
             value: "32001"
           - name: PGDATABASE
@@ -50,7 +48,7 @@ spec:
             value: mysecretpassword
           command: ['/bin/bash', '-c', 'apt update && apt install curl -y && export PGHOST=`curl http://169.254.169.254/latest/meta-data/public-ipv4` && while [ 1 ]; do psql && break || sleep 5; done']
       containers:
-      - image: 54.174.180.88:32003/samsara:latest
+      - image: 54.174.180.88:32003/samsara/latest
         name: samsara
         env:
         - name: DB_HOST
