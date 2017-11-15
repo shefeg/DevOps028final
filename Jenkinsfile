@@ -49,8 +49,21 @@ node('master') {
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
-        timeout(time: 10, unit: 'MINUTES') {
-            sh "until \$(curl -sSf http://`kubectl describe svc samsara | grep \"LoadBalancer Ingress:\" | cut -d':' -f2 | tr -d ' '`:9000/login > /dev/null); do sleep 10; done"
+        timeout(time: 2, unit: 'MINUTES') {
+            APP_URI = sh(
+                    script: "kubectl describe services samsara | grep 'LoadBalancer Ingress:' | cut -d':' -f2 | tr -d ' '",
+                    returnStdout: true
+            ).trim()
+            waitUntil {
+                try {
+                    def response = httpRequest "http://$APP_URI:9000/login"
+                    println("Status: "+response.status)
+                    println("Content: "+response.content)
+                    return true
+                } catch (Exception e) {
+                    return false
+                }
+            }
         }
     }
 }
