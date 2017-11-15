@@ -1,2 +1,2 @@
-def command = "java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://`curl http://169.254.169.254/latest/meta-data/public-ipv4`:32002 -auth alexey:Ins1ght create-job build_application < /var/jenkins_home/build_application.xml"
+def command = "curl -s -XPOST 'http://`curl http://169.254.169.254/latest/meta-data/public-ipv4`:32002/createItem?name=build_application' --data-binary @/var/jenkins_home/build_application.xml -H \"Content-Type:text/xml\" --user alexey:Ins1ght"
 println command.execute().text

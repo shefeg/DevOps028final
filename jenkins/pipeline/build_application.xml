@@ -1,5 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <flow-definition plugin="workflow-job@2.15">
+    <actions>
+        <io.jenkins.blueocean.service.embedded.BlueOceanUrlAction plugin="blueocean-rest-impl@1.3.1">
+            <blueOceanUrlObject class="io.jenkins.blueocean.service.embedded.BlueOceanUrlObjectImpl">
+                <mappedUrl>blue/organizations/jenkins/build_application</mappedUrl>
+                <modelObject class="flow-definition" reference="../../../.."/>
+            </blueOceanUrlObject>
+        </io.jenkins.blueocean.service.embedded.BlueOceanUrlAction>
+    </actions>
     <description></description>
     <keepDependencies>false</keepDependencies>
     <properties>
@@ -11,6 +19,8 @@
             <rebuildDisabled>false</rebuildDisabled>
         </com.sonyericsson.rebuild.RebuildSettings>
         <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@2.0.1">
+            <maxConcurrentPerNode>0</maxConcurrentPerNode>
+            <maxConcurrentTotal>0</maxConcurrentTotal>
             <categories class="java.util.concurrent.CopyOnWriteArrayList"/>
             <throttleEnabled>false</throttleEnabled>
             <throttleOption>project</throttleOption>
@@ -22,13 +32,74 @@
         </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
     </properties>
     <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
-        <script>podTemplate(label: &apos;jenkins-slave&apos;) {
-            node(&apos;jenkins-slave&apos;) {
-            stage(&apos;Run shell&apos;) {
-            sh &apos;echo hello world&apos;
+        <script>node(&apos;master&apos;) {
+
+            // tools maven &quot;M3&quot;
+
+            parameters {
+            string(name: &apos;MAVEN_OPTS&apos;, defaultValue: &apos;-Djava.awt.headless=true&apos;, description: &apos;Options for Maven&apos;)
+            string(name: &apos;KOPS_CLUSTER_NAME&apos;, defaultValue: &apos;aikubernetes.k8s.local&apos;)
+            string(name: &apos;KOPS_CLUSTER_S3_STATE&apos;, defaultValue: &apos;s3://aikubernetes-k8s-local-state-store&apos;)
+            }
+
+            stage(&apos;Checkout&apos;) {
+            checkout(
+            [$class: &apos;GitSCM&apos;,
+            branches: [[name: &apos;*/master&apos;]], doGenerateSubmoduleConfigurations: false,
+            extensions: [[$class: &apos;CleanBeforeCheckout&apos;]], submoduleCfg: [],
+            userRemoteConfigs: [[url: &apos;https://github.com/shefeg/DevOps028final.git&apos;]]]
+            )
+            }
+
+
+            stage(&apos;Build application&apos;) {
+            def mvn_version = &apos;M3&apos;
+            withEnv( [&quot;PATH+MAVEN=${tool mvn_version}/bin&quot;] ) {
+            sh &quot;mvn clean package&quot;
+            }
+
+
+            /*       def mvnHome = tool &apos;maven-3.3.9&apos;
+            sh &quot;${mvnHome}/bin/mvn -B dependency:resolve ${params.MAVEN_OPTS}&quot;
+            sh &quot;${mvnHome}/bin/mvn clean compile -B ${params.MAVEN_OPTS}&quot;
+            sh &quot;${mvnHome}/bin/mvn package -B ${params.MAVEN_OPTS}&quot;*/
+
+            }
+
+            stage(&apos;Create Artifact&apos;) {
+            archive &apos;target/*.jar&apos;
+            }
+
+            stage(&apos;Push Samsara and Postgres images to private Docker registry&apos;) {
+            app = docker.build(&quot;samsara&quot;, &quot;-f Dockerfile.app .&quot;)
+            db = docker.build(&quot;postgresdb&quot;, &quot;-f Dockerfile.db .&quot;)
+            docker.withRegistry(&quot;http://54.174.180.88:32003&quot;) {
+            app.push(&quot;latest&quot;)
+            db.push(&quot;latest&quot;)
+            }
+            sh &quot;docker rmi `docker images -q -f dangling=true`&quot;
+            }
+
+            stage(&apos;Configure kubectl tool&apos;) {
+            sh &quot;curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubectl&quot;
+            sh &quot;chmod +x ./kubectl &amp;&amp; mv ./kubectl /usr/local/bin/kubectl&quot;
+            sh &quot;mkdir -p ~/.kube&quot;
+            sh &quot;cp config ~/.kube/config &amp;&amp; kubectl cluster-info&quot;
+            }
+
+            stage(&apos;Apply updates to Kubernetes cluster when ready&apos;) {
+            sh &quot;kubectl apply -f postgres-deployment.yaml&quot;
+            sh &quot;kubectl apply -f samsara-deployment.yaml &amp;&amp; kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara:latest --record&quot;
+            }
+
+            stage(&apos;Check if application is reachable on the Loadbalancer&apos;) {
+            timeout(time: 10, unit: &apos;MINUTES&apos;) {
+            sh &quot;until \$(curl -sSf http://`kubectl describe svc samsara | grep \&quot;LoadBalancer Ingress:\&quot; | cut -d&apos;:&apos; -f2 | tr -d &apos; &apos;`:9000/login &gt; /dev/null); do sleep 10; done&quot;
             }
             }
-            }</script>
+            }
+
+        </script>
         <sandbox>true</sandbox>
     </definition>
     <triggers/>
