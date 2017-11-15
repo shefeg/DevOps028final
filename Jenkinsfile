@@ -60,13 +60,10 @@ node('master') {
             ).trim()
             waitUntil {
                 try {
-                    def checkurl = new URL("http://$APP_URI:9000/login").getText()
-                    println("Status: "+checkurl.status)
-                    println("Content: "+checkurl.content)
-                    return true
-
+                    InetAddress.getByName("http://$APP_URI:9000/login").isReachable(3000);
+                    return true;
                 } catch (Exception e) {
-                    return false
+                    return false;
                 }
             }
         }
