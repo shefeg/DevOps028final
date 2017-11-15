@@ -1,16 +1,5 @@
 FROM jenkins/jenkins:2.73.1
 
-COPY jenkins/plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh kubernetes:1.1
-
-COPY jenkins/config.xml /var/jenkins_home/config.xml
-
-COPY jenkins/create_user.groovy /var/jenkins_home/init.groovy.d/create_user.groovy
-
-COPY jenkins/pipeline/build_application.xml /var/jenkins_home/build_application.xml
-COPY jenkins/create_pipeline.groovy /var/jenkins_home/init.groovy.d/create_pipeline.groovy
-
 USER root
 
 RUN apt-get update && apt-get install \
@@ -25,3 +14,14 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubunt
 RUN apt-get install -f && dpkg --configure -a
 
 RUN apt-get update && apt-get install docker-ce -y
+
+COPY jenkins/plugins.txt /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+RUN /usr/local/bin/install-plugins.sh kubernetes:1.1
+
+COPY jenkins/config.xml /var/jenkins_home/config.xml
+
+COPY jenkins/create_user.groovy /var/jenkins_home/init.groovy.d/create_user.groovy
+
+COPY jenkins/pipeline/build_application.xml /var/jenkins_home/build_application.xml
+COPY jenkins/create_pipeline.groovy /var/jenkins_home/init.groovy.d/create_pipeline.groovy
