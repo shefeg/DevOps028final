@@ -38,8 +38,8 @@ spec:
         - name: init-mydb
           image: postgres:9.3
           env:
-          - name: PGHOST
-            value: "52.90.26.189"
+#          - name: PGHOST
+#            value: "52.90.26.189"
           - name: PGPORT
             value: "32001"
           - name: PGDATABASE
@@ -48,10 +48,9 @@ spec:
             value: aura
           - name: PGPASSWORD
             value: mysecretpassword
-          command: ['/bin/bash', '-c', 'while [ 1 ]; do psql && break || sleep 5; done']
+          command: ['/bin/bash', '-c', 'export PGHOST=`curl http://169.254.169.254/latest/meta-data/public-ipv4` && while [ 1 ]; do psql && break || sleep 5; done']
       containers:
-      - image: 455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara:latest
-#        imagePullPolicy: Always
+      - image: 52.91.241.129:32003/samsara:latest
         name: samsara
         env:
         - name: DB_HOST

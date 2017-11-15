@@ -47,7 +47,7 @@ spec:
         runAsUser: 999
         fsGroup: 999
       containers:
-      - image: 455022533484.dkr.ecr.us-east-1.amazonaws.com/postgresdb:latest
+      - image: 52.91.241.129:32003/postgresdb:latest
         name: postgresdb
         ports:
         - containerPort: 5432
