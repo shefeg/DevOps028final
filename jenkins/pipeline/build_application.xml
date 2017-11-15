@@ -11,6 +11,10 @@
     <description></description>
     <keepDependencies>false</keepDependencies>
     <properties>
+        <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.28.1">
+            <projectUrl>https://github.com/shefeg/DevOps028final/</projectUrl>
+            <displayName></displayName>
+        </com.coravy.hudson.plugins.github.GithubProjectProperty>
         <com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty plugin="gitlab-plugin@1.5.0">
             <gitLabConnection></gitLabConnection>
         </com.dabsquared.gitlabjenkins.connection.GitLabConnectionProperty>
@@ -31,76 +35,25 @@
             <triggers/>
         </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
     </properties>
-    <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.41">
-        <script>node(&apos;master&apos;) {
-
-            // tools maven &quot;M3&quot;
-
-            parameters {
-            string(name: &apos;MAVEN_OPTS&apos;, defaultValue: &apos;-Djava.awt.headless=true&apos;, description: &apos;Options for Maven&apos;)
-            string(name: &apos;KOPS_CLUSTER_NAME&apos;, defaultValue: &apos;aikubernetes.k8s.local&apos;)
-            string(name: &apos;KOPS_CLUSTER_S3_STATE&apos;, defaultValue: &apos;s3://aikubernetes-k8s-local-state-store&apos;)
-            }
-
-            stage(&apos;Checkout&apos;) {
-            checkout(
-            [$class: &apos;GitSCM&apos;,
-            branches: [[name: &apos;*/master&apos;]], doGenerateSubmoduleConfigurations: false,
-            extensions: [[$class: &apos;CleanBeforeCheckout&apos;]], submoduleCfg: [],
-            userRemoteConfigs: [[url: &apos;https://github.com/shefeg/DevOps028final.git&apos;]]]
-            )
-            }
-
-
-            stage(&apos;Build application&apos;) {
-            def mvn_version = &apos;M3&apos;
-            withEnv( [&quot;PATH+MAVEN=${tool mvn_version}/bin&quot;] ) {
-            sh &quot;mvn clean package&quot;
-            }
-
-
-            /*       def mvnHome = tool &apos;maven-3.3.9&apos;
-            sh &quot;${mvnHome}/bin/mvn -B dependency:resolve ${params.MAVEN_OPTS}&quot;
-            sh &quot;${mvnHome}/bin/mvn clean compile -B ${params.MAVEN_OPTS}&quot;
-            sh &quot;${mvnHome}/bin/mvn package -B ${params.MAVEN_OPTS}&quot;*/
-
-            }
-
-            stage(&apos;Create Artifact&apos;) {
-            archive &apos;target/*.jar&apos;
-            }
-
-            stage(&apos;Push Samsara and Postgres images to private Docker registry&apos;) {
-            app = docker.build(&quot;samsara&quot;, &quot;-f Dockerfile.app .&quot;)
-            db = docker.build(&quot;postgresdb&quot;, &quot;-f Dockerfile.db .&quot;)
-            docker.withRegistry(&quot;http://54.174.180.88:32003&quot;) {
-            app.push(&quot;latest&quot;)
-            db.push(&quot;latest&quot;)
-            }
-            sh &quot;docker rmi `docker images -q -f dangling=true`&quot;
-            }
-
-            stage(&apos;Configure kubectl tool&apos;) {
-            sh &quot;curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.8.0/bin/linux/amd64/kubectl&quot;
-            sh &quot;chmod +x ./kubectl &amp;&amp; mv ./kubectl /usr/local/bin/kubectl&quot;
-            sh &quot;mkdir -p ~/.kube&quot;
-            sh &quot;cp config ~/.kube/config &amp;&amp; kubectl cluster-info&quot;
-            }
-
-            stage(&apos;Apply updates to Kubernetes cluster when ready&apos;) {
-            sh &quot;kubectl apply -f postgres-deployment.yaml&quot;
-            sh &quot;kubectl apply -f samsara-deployment.yaml &amp;&amp; kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara:latest --record&quot;
-            }
-
-            stage(&apos;Check if application is reachable on the Loadbalancer&apos;) {
-            timeout(time: 10, unit: &apos;MINUTES&apos;) {
-            sh &quot;until \$(curl -sSf http://`kubectl describe svc samsara | grep \&quot;LoadBalancer Ingress:\&quot; | cut -d&apos;:&apos; -f2 | tr -d &apos; &apos;`:9000/login &gt; /dev/null); do sleep 10; done&quot;
-            }
-            }
-            }
-
-        </script>
-        <sandbox>true</sandbox>
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.41">
+        <scm class="hudson.plugins.git.GitSCM" plugin="git@3.6.3">
+            <configVersion>2</configVersion>
+            <userRemoteConfigs>
+                <hudson.plugins.git.UserRemoteConfig>
+                    <url>https://github.com/shefeg/DevOps028final.git</url>
+                </hudson.plugins.git.UserRemoteConfig>
+            </userRemoteConfigs>
+            <branches>
+                <hudson.plugins.git.BranchSpec>
+                    <name>*/master</name>
+                </hudson.plugins.git.BranchSpec>
+            </branches>
+            <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+            <submoduleCfg class="list"/>
+            <extensions/>
+        </scm>
+        <scriptPath>Jenkinsfile</scriptPath>
+        <lightweight>true</lightweight>
     </definition>
     <triggers/>
     <disabled>false</disabled>
