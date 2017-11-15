@@ -57,7 +57,7 @@ spec:
           protocol: TCP
         volumeMounts:
           - name: jenkins-ps
-            mountPath: "/var"
+            mountPath: "/var/jenkins_home"
           - name: docker-sock
             mountPath: "/var/run/docker.sock"
       volumes:
