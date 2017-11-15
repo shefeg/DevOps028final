@@ -52,20 +52,27 @@ node('master') {
         sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara --record"
     }
 
- /*   stage('Check if application is reachable on the Loadbalancer') {
+ *   stage('Check if application is reachable on the Loadbalancer') {
         timeout(time: 5, unit: 'MINUTES') {
             APP_URI = sh(
                     script: "kubectl describe services samsara | grep 'LoadBalancer Ingress:' | cut -d':' -f2 | tr -d ' '",
                     returnStdout: true
             ).trim()
             waitUntil {
-                try {
-                    InetAddress.getByName("http://$APP_URI:9000/login").isReachable(3000);
-                    return true;
-                } catch (Exception e) {
-                    return false;
+                try
+                {
+                    URL url= new URL("http://$APP_URI:9000/login");
+                    URLConnection connection = url.openConnection();
+                    connection.setRequestProperty("User-Agent", "I am a real browser like Mozilla or MSIE" );
+                    String[] results = loadStrings(connection.getInputStream());
+                    println(results);
+                }
+                catch (Exception e) // MalformedURL, IO
+                {
+                    println("Error");
+                    e.printStackTrace();
                 }
             }
         }
-    }*/
+    }
 }
