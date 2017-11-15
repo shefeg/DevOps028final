@@ -33,7 +33,10 @@ node('master') {
             app.push("latest")
             db.push("latest")
         }
-        sh "while [ 1 ]; do docker rmi `docker images -q -f dangling=true` || true && break; done"
+        try {
+            sh "docker rmi `docker images -q -f dangling=true`"
+        } catch (Exception e) {
+            return true
     }
 
     stage('Configure kubectl tool') {
@@ -56,9 +59,7 @@ node('master') {
             ).trim()
             waitUntil {
                 try {
-                    def response = httpRequest "http://$APP_URI:9000/login"
-                    println("Status: "+response.status)
-                    println("Content: "+response.content)
+                    new URL("http://$APP_URI/9000/login").getText()
                     return true
                 } catch (Exception e) {
                     return false
