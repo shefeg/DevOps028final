@@ -56,7 +56,8 @@ spec:
           name: jenkins-port
           protocol: TCP
         readinessProbe:
-         tcpSocket:
+         httpGet:
+           path: /login
            port: 8080
          initialDelaySeconds: 40
          periodSeconds: 20
