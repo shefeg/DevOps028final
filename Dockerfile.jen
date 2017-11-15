@@ -13,7 +13,7 @@ COPY jenkins/create_pipeline.groovy /var/jenkins_home/init.groovy.d/create_pipel
 
 USER root
 
-RUN apt-get install \
+RUN apt-get update && apt-get install \
         apt-transport-https \
         ca-certificates \
         curl \
