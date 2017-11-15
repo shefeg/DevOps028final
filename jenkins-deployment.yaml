@@ -49,7 +49,7 @@ spec:
         service: jenkins
     spec:
       containers:
-      - image: 34.207.172.193:32003/jenkins/jenkins-image:latest
+      - image: 54.174.180.88:32003/jenkins/jenkins-image:latest
         name: jenkins
         ports:
         - containerPort: 8080
