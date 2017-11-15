@@ -52,7 +52,7 @@ node('master') {
         sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara --record"
     }
 
- *   stage('Check if application is reachable on the Loadbalancer') {
+    stage('Check if application is reachable on the Loadbalancer') {
         timeout(time: 5, unit: 'MINUTES') {
             APP_URI = sh(
                     script: "kubectl describe services samsara | grep 'LoadBalancer Ingress:' | cut -d':' -f2 | tr -d ' '",
