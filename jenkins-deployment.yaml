@@ -55,6 +55,13 @@ spec:
         - containerPort: 8080
           name: jenkins-port
           protocol: TCP
+        readinessProbe:
+         tcpSocket:
+           port: 8080
+         initialDelaySeconds: 40
+         periodSeconds: 20
+        securityContext:
+          privileged: true
         volumeMounts:
           - name: jenkins-ps
             mountPath: "/var"
