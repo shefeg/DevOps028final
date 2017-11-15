@@ -60,18 +60,12 @@ node('master') {
                     returnStdout: true
             ).trim()
             waitUntil {
-                try
+                try {
+                    InetAddress.getByName("http://$APP_URI:9000/login").isReachable(2000); //Replace with your name
+                    return true;
+                } catch (Exception e)
                 {
-                    URL url= new URL("http://$APP_URI:9000/login");
-                    URLConnection connection = url.openConnection();
-                    connection.setRequestProperty("User-Agent", "I am a real browser like Mozilla or MSIE" );
-                    String[] results = loadStrings(connection.getInputStream());
-                    println(results);
-                }
-                catch (Exception e) // MalformedURL, IO
-                {
-                    println("Error");
-                    e.printStackTrace();
+                    return false;
                 }
             }
         }
