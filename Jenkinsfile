@@ -45,7 +45,7 @@ node('master') {
 
     stage('Apply updates to Kubernetes cluster when ready') {
         sh "kubectl apply -f postgres-deployment.yaml"
-        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara:latest --record"
+        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara --record"
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
