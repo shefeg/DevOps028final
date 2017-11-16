@@ -5,6 +5,7 @@ node('master') {
         string(name: 'MAVEN_OPTS', defaultValue: '-Djava.awt.headless=true', description: 'Options for Maven')
         string(name: 'KOPS_CLUSTER_NAME', defaultValue: 'aikubernetes.k8s.local')
         string(name: 'KOPS_CLUSTER_S3_STATE', defaultValue: 's3://aikubernetes-k8s-local-state-store')
+        string(name: 'REGISTRY', defaultValue: '34.238.146.160:32003')
     }
 
     stage('Checkout') {
@@ -30,7 +31,7 @@ node('master') {
     stage('Push Samsara and Postgres images to private Docker registry') {
         app = docker.build("samsara", "-f Dockerfile.app .")
         db = docker.build("postgresdb", "-f Dockerfile.db .")
-        docker.withRegistry("http://34.238.146.160:32003") {
+        docker.withRegistry("http://${REGISTRY}") {
             app.push("latest")
             db.push("latest")
         }
@@ -50,7 +51,7 @@ node('master') {
 
     stage('Apply updates to Kubernetes cluster when ready') {
         sh "kubectl apply -f postgres-deployment.yaml"
-        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.174.180.88:32003/samsara --record"
+        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=${REGISTRY}/samsara --record"
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
