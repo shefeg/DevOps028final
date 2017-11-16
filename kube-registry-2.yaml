@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kube-registry
+  namespace: kube-system
   labels:
     service: kube-registry-upstream
     kubernetes.io/cluster-service: "true"
@@ -31,17 +32,21 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   name: kube-registry-v0
+  namespace: kube-system
   labels:
     k8s-app: kube-registry-upstream
+    version: v0
     kubernetes.io/cluster-service: "true"
 spec:
   replicas: 1
   selector:
     k8s-app: kube-registry-upstream
+    version: v0
   template:
     metadata:
       labels:
         k8s-app: kube-registry-upstream
+        version: v0
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
@@ -72,6 +77,7 @@ apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   name: kube-registry-proxy
+  namespace: kube-system
   labels:
     k8s-app: kube-registry-proxy
     kubernetes.io/cluster-service: "true"
@@ -95,10 +101,6 @@ spec:
           value: kube-registry.default.svc.cluster.local
         - name: REGISTRY_PORT
           value: "5000"
-#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
-#          value: "/cache.letsencrypt"
-#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
-#          value: "admin@example.com"
         ports:
         - name: registry
           containerPort: 80
