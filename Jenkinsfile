@@ -30,7 +30,7 @@ node('master') {
     stage('Push Samsara and Postgres images to private Docker registry') {
         app = docker.build("samsara", "-f Dockerfile.app .")
         db = docker.build("postgresdb", "-f Dockerfile.db .")
-        docker.withRegistry("http://54.174.180.88:32003") {
+        docker.withRegistry("http://34.238.146.160:32003") {
             app.push("latest")
             db.push("latest")
         }
