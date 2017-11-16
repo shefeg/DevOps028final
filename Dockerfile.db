@@ -13,9 +13,8 @@ RUN apt-get update && apt-get install -y python-software-properties software-pro
 USER postgres
 
 RUN /etc/init.d/postgresql start &&\
-    psql --command "CREATE USER aura WITH SUPERUSER PASSWORD 'mysecretpassword'; CREATE USER datadog WITH PASSWORD 'datadog';" &&\
     createdb -O postgres auradb &&\
-    psql --command "grant SELECT ON auradb to datadog;"
+    psql --command "CREATE USER aura WITH SUPERUSER PASSWORD 'mysecretpassword'; CREATE USER datadog WITH PASSWORD 'datadog'; grant SELECT ON auradb to datadog;"
 
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
