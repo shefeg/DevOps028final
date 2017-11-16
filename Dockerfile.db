@@ -16,6 +16,9 @@ RUN /etc/init.d/postgresql start &&\
     psql --command "CREATE USER aura WITH SUPERUSER PASSWORD 'mysecretpassword';" &&\
     createdb -O postgres auradb
 
+RUN psql --command "CREATE USER datadog WITH PASSWORD 'datadog';"
+RUN psql --command "grant SELECT ON pg_stat_database to datadog;"
+
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
