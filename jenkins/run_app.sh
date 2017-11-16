@@ -20,7 +20,6 @@ liquibase/liquibase --defaultsFile=liquibase/liquibase.properties --changeLogFil
 
 #Run application
 java -Dcom.sun.management.jmxremote \
-  -Djava.rmi.server.hostname=127.0.0.1 \
   -Dcom.sun.management.jmxremote.port=9010 \
   -Dcom.sun.management.jmxremote.local.only=false \
   -Dcom.sun.management.jmxremote.authenticate=false \
