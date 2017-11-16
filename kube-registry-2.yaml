@@ -3,12 +3,12 @@ kind: Service
 metadata:
   name: kube-registry
   labels:
-    k8s-app: kube-registry-upstream
+    service: kube-registry-upstream
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "KubeRegistry"
 spec:
   selector:
-    k8s-app: kube-registry-upstream
+    service: kube-registry-upstream
   ports:
   - name: registry
     port: 5000
@@ -27,8 +27,8 @@ spec:
     requests:
       storage: 5Gi
 ---
-apiVersion: apps/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: ReplicationController
 metadata:
   name: kube-registry-v0
   labels:
@@ -95,10 +95,10 @@ spec:
           value: kube-registry.default.svc.cluster.local
         - name: REGISTRY_PORT
           value: "5000"
-#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
-#          value: "/cache.letsencrypt"
-#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
-#          value: "admin@example.com"
+        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
+          value: "/cache.letsencrypt"
+        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
+          value: "admin@example.com"
         ports:
         - name: registry
           containerPort: 80
