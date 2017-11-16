@@ -95,10 +95,10 @@ spec:
           value: kube-registry.default.svc.cluster.local
         - name: REGISTRY_PORT
           value: "5000"
-        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
-          value: "/cache.letsencrypt"
-        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
-          value: "admin@example.com"
+#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_CACHEFILE
+#          value: "/cache.letsencrypt"
+#        - name: REGISTRY_HTTP_TLS_LETSENCRYPT_EMAIL
+#          value: "admin@example.com"
         ports:
         - name: registry
           containerPort: 80
