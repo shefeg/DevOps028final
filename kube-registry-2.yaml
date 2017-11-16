@@ -33,18 +33,15 @@ metadata:
   name: kube-registry-v0
   labels:
     k8s-app: kube-registry-upstream
-    version: v0
     kubernetes.io/cluster-service: "true"
 spec:
   replicas: 1
   selector:
     k8s-app: kube-registry-upstream
-    version: v0
   template:
     metadata:
       labels:
         k8s-app: kube-registry-upstream
-        version: v0
         kubernetes.io/cluster-service: "true"
     spec:
       containers:
@@ -78,7 +75,6 @@ metadata:
   labels:
     k8s-app: kube-registry-proxy
     kubernetes.io/cluster-service: "true"
-    version: v0.4
 spec:
   template:
     metadata:
@@ -86,7 +82,6 @@ spec:
         k8s-app: kube-registry-proxy
         kubernetes.io/name: "kube-registry-proxy"
         kubernetes.io/cluster-service: "true"
-        version: v0.4
     spec:
       containers:
       - name: kube-registry-proxy
