@@ -19,4 +19,9 @@ tar -xf liquibase/liquibase-3.5.3-bin.tar.gz -C liquibase
 liquibase/liquibase --defaultsFile=liquibase/liquibase.properties --changeLogFile=liquibase/changelogs/changelog-main.xml --classpath=liquibase/postgresql-42.1.4.jar update
 
 #Run application
-java -jar /samsara/Samsara-1.3.5.RELEASE.jar
+java -Dcom.sun.management.jmxremote \
+  -Dcom.sun.management.jmxremote.port=9010 \
+  -Dcom.sun.management.jmxremote.local.only=false \
+  -Dcom.sun.management.jmxremote.authenticate=false \
+  -Dcom.sun.management.jmxremote.ssl=false \
+  -jar /samsara/Samsara-1.3.5.RELEASE.jar
