@@ -75,6 +75,6 @@ spec:
   maxSize: 1
   minSize: 1
   role: Node
-  rootVolumeSize: 8
+  rootVolumeSize: 20
   subnets:
   - us-east-1a
