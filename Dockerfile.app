@@ -5,7 +5,7 @@ RUN mkdir -p /samsara/liquibase
 WORKDIR /samsara
 
 COPY jenkins/run_app.sh .
-COPY target/Samsara-1.3.5.RELEASE.jar .
+COPY target/Samsara-1.5.8.RELEASE.jar .
 COPY liquibase ./liquibase
 
 ENV DB_HOST=postgresdb

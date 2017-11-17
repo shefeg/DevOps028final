@@ -24,4 +24,4 @@ java -Dcom.sun.management.jmxremote \
   -Dcom.sun.management.jmxremote.local.only=false \
   -Dcom.sun.management.jmxremote.authenticate=false \
   -Dcom.sun.management.jmxremote.ssl=false \
-  -jar /samsara/Samsara-1.3.5.RELEASE.jar
+  -jar /samsara/Samsara-1.5.8.RELEASE.jar
