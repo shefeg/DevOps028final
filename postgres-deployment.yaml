@@ -47,7 +47,7 @@ spec:
         runAsUser: 999
         fsGroup: 999
       containers:
-      - image: 34.238.146.160:32003/postgresdb:latest
+      - image: 54.175.70.1:32003/postgresdb:latest
         name: postgresdb
         ports:
         - containerPort: 5432
