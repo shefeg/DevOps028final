@@ -50,7 +50,7 @@ node('master') {
 
     stage('Apply updates to Kubernetes cluster when ready') {
         sh "kubectl apply -f postgres-deployment.yaml"
-        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.175.70.1:32003/samsara:latest --record"
+        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.175.70.1:32003/samsara --record"
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
@@ -59,13 +59,3 @@ node('master') {
         }
     }
 }
-
-cat << EOF > logging-jconsole.properties
-handlers=java.util.logging.ConsoleHandler
-
-.level=INFO
-java.util.logging.ConsoleHandler.level=FINEST
-java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
-javax.management.level=FINEST
-javax.management.remote.level=FINEST
-EOF
