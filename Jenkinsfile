@@ -59,3 +59,13 @@ node('master') {
         }
     }
 }
+
+cat << EOF > logging-jconsole.properties
+handlers=java.util.logging.ConsoleHandler
+
+.level=INFO
+java.util.logging.ConsoleHandler.level=FINEST
+java.util.logging.ConsoleHandler.formatter=java.util.logging.SimpleFormatter
+javax.management.level=FINEST
+javax.management.remote.level=FINEST
+EOF
