@@ -17,6 +17,7 @@ spec:
       targetPort: 50000
   selector:
     service: jenkins
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
