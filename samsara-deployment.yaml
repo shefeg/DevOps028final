@@ -54,7 +54,7 @@ spec:
             value: mysecretpassword
           command: ['/bin/bash', '-c', 'apt update && apt install curl -y && export PGHOST=`curl http://169.254.169.254/latest/meta-data/public-ipv4` && while [ 1 ]; do psql && break || sleep 5; done']
       containers:
-      - image: 54.175.70.1:32003/samsara:latest
+      - image: 455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara:latest
         name: samsara
         env:
         - name: DB_HOST

@@ -48,7 +48,7 @@ spec:
         service: jenkins
     spec:
       containers:
-      - image: 54.175.70.1:32003/jenkins/jenkins-image:latest
+      - image: 455022533484.dkr.ecr.us-east-1.amazonaws.com/jenkins:latest
         name: jenkins
         ports:
         - containerPort: 8080

@@ -30,7 +30,7 @@ node('master') {
     stage('Push Samsara and Postgres images to private Docker registry') {
         app = docker.build("samsara", "-f Dockerfile.app .")
         db = docker.build("postgresdb", "-f Dockerfile.db .")
-        docker.withRegistry("http://54.175.70.1:32003") {
+        docker.withRegistry("https://455022533484.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:0ac74b53-e568-4b1a-bb1e-c125eda20097") {
             app.push("latest")
             db.push("latest")
         }
@@ -50,7 +50,7 @@ node('master') {
 
     stage('Apply updates to Kubernetes cluster when ready') {
         sh "kubectl apply -f postgres-deployment.yaml"
-        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=54.175.70.1:32003/samsara --record"
+        sh "kubectl apply -f samsara-deployment.yaml && kubectl set image deployment samsara-deployment samsara=455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara --record"
     }
 
     stage('Check if application is reachable on the Loadbalancer') {
