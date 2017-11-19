@@ -32,8 +32,7 @@ podTemplate(label: 'slave', containers: [
         container ('docker') {
 
             stage('Build and push Samsara and Postgres images to AWS ECR') {
-                set +x
-                sh "docker login -u ${params.USERNAME} -p ${params.PASSWORD} https://455022533484.dkr.ecr.us-east-1.amazonaws.com"
+                sh "set +x && docker login -u ${params.USERNAME} -p ${params.PASSWORD} https://455022533484.dkr.ecr.us-east-1.amazonaws.com"
                 sh "docker build -f Dockerfile.app -t 455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara:latest ."
                 sh "docker build -f Dockerfile.db -t 455022533484.dkr.ecr.us-east-1.amazonaws.com/postgresdb:latest ."
                 sh "docker push 455022533484.dkr.ecr.us-east-1.amazonaws.com/samsara:latest"
