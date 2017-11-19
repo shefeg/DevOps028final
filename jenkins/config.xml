@@ -26,6 +26,7 @@
             <defaultsProviderTemplate></defaultsProviderTemplate>
             <templates/>
             <skipTlsVerify>true</skipTlsVerify>
+            <jenkinsUrl>http://a45d68027cc8c11e78f890ee6994f0a1-1275993907.us-east-1.elb.amazonaws.com:8080</jenkinsUrl>
             <credentialsId>kubernetes-credentials</credentialsId>
             <containerCap>10</containerCap>
             <retentionTimeout>5</retentionTimeout>

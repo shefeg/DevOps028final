@@ -23,7 +23,6 @@ COPY jenkins/config.xml /var/jenkins_home/config.xml
 
 COPY jenkins/disable-csrf-protection.groovy /var/jenkins_home/init.groovy.d/disable-csrf-protection.groovy
 COPY jenkins/create_user.groovy /var/jenkins_home/init.groovy.d/create_user.groovy
-COPY jenkins/configMavenAutoInstaller.groovy /var/jenkins_home/init.groovy.d/configMavenAutoInstaller.groovy
 
 COPY jenkins/pipeline/build_application.xml /var/jenkins_home/build_application.xml
 COPY jenkins/create_pipeline.groovy /var/jenkins_home/init.groovy.d/create_pipeline.groovy

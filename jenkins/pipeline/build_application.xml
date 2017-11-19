@@ -31,6 +31,20 @@
             <limitOneJobWithMatchingParams>false</limitOneJobWithMatchingParams>
             <paramsToUseForLimit></paramsToUseForLimit>
         </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+        <hudson.model.ParametersDefinitionProperty>
+            <parameterDefinitions>
+                <hudson.model.StringParameterDefinition>
+                    <name>USERNAME</name>
+                    <description></description>
+                    <defaultValue>AWS</defaultValue>
+                </hudson.model.StringParameterDefinition>
+                <hudson.model.PasswordParameterDefinition>
+                    <name>PASSWORD</name>
+                    <description></description>
+                    <defaultValue>{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}</defaultValue>
+                </hudson.model.PasswordParameterDefinition>
+            </parameterDefinitions>
+        </hudson.model.ParametersDefinitionProperty>
         <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
             <triggers/>
         </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
