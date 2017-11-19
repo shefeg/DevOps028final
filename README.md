@@ -19,13 +19,16 @@ Auth service
 - Kops _https://github.com/kubernetes/kops_
 - Install and Set Up kubectl _https://kubernetes.io/docs/tasks/tools/install-kubectl_
 
-###Deploy steps:###
-**1. Spin up Kops cluster in AWS** \
-git clone https://github.com/shefeg/DevOps028final.git \
-cd DevOps028final \
-kops replace --name aikubernetes.k8s.local --state=s3://aikubernetes-k8s-local-state-store -f kops-full-cluster.yaml \
-kops update cluster --name aikubernetes.k8s.local --state=s3://aikubernetes-k8s-local-state-store --yes \
-**2. Spin up Jenkins deployment** \
-kubectl apply -f jenkins-deployment.yaml \
-**3. Start Jenkins pipeline job in Jenkins server** \
+###Deploy steps:
+**1. Spin up Kops cluster in AWS**
+- git clone _https://github.com/shefeg/DevOps028final.git_ 
+- cd DevOps028final 
+- kops replace --name aikubernetes.k8s.local --state=s3://aikubernetes-k8s-local-state-store -f kops-full-cluster.yaml 
+- kops update cluster --name aikubernetes.k8s.local --state=s3://aikubernetes-k8s-local-state-store --yes
+ 
+**2. Spin up Jenkins deployment**
+- kubectl apply -f jenkins-deployment.yaml
+
+**3. Start Jenkins pipeline job in Jenkins server**
+
 **4. Open Samsara application via browser using Loadbalancer URL**
