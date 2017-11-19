@@ -15,11 +15,13 @@ Auth service
 `java -jar Samsara-1.5.8.RELEASE.jar`
 
 ##Deploy Samsara service with Kubernetes in AWS
+
 ###Prerequisites:
 - Kops _https://github.com/kubernetes/kops_
 - Install and Set Up kubectl _https://kubernetes.io/docs/tasks/tools/install-kubectl_
 
 ###Deploy steps:
+
 **1. Spin up Kops cluster in AWS**
 - git clone _https://github.com/shefeg/DevOps028final.git_ 
 - cd DevOps028final 
