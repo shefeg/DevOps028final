@@ -20,6 +20,7 @@ RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 RUN /usr/local/bin/install-plugins.sh kubernetes:1.1
 
 COPY jenkins/config.xml /var/jenkins_home/config.xml
+COPY jenkins/credentials.xml /var/jenkins_home/credentials.xml
 
 COPY jenkins/disable-csrf-protection.groovy /var/jenkins_home/init.groovy.d/disable-csrf-protection.groovy
 COPY jenkins/create_user.groovy /var/jenkins_home/init.groovy.d/create_user.groovy
