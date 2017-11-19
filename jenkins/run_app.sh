@@ -24,6 +24,6 @@ java -Dcom.sun.management.jmxremote \
   -Dcom.sun.management.jmxremote.local.only=false \
   -Dcom.sun.management.jmxremote.authenticate=false \
   -Dcom.sun.management.jmxremote.ssl=false \
-  -Djava.rmi.server.hostname=a27c88e7ccbb211e7885c0e1e21bfa8f-1910585840.us-east-1.elb.amazonaws.com \
+  -Djava.rmi.server.hostname=afcbab8f6cd3411e7878f0e69f0815e8-536618342.us-east-1.elb.amazonaws.com \
   -Dcom.sun.management.jmxremote.rmi.port=9010 \
   -jar /samsara/Samsara-1.5.8.RELEASE.jar
