@@ -19,7 +19,7 @@ Auth service
 - Kops _https://github.com/kubernetes/kops_
 - Install and Set Up kubectl _https://kubernetes.io/docs/tasks/tools/install-kubectl_
 
-###Deploy steps:
+###Deploy steps:###
 **1. Spin up Kops cluster in AWS** \
 git clone https://github.com/shefeg/DevOps028final.git \
 cd DevOps028final \
